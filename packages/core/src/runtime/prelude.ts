@@ -1,0 +1,1 @@
+export { defineUserscript } from './userscript'

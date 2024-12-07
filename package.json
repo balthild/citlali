@@ -1,0 +1,19 @@
+{
+  "name": "@citlali/monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "run parallel run dev",
+    "build": "run each run build",
+    "clean": "run parallel run clean",
+    "each": "yarn workspaces foreach --topological-dev --all --exclude '@citlali/monorepo'",
+    "parallel": "yarn workspaces foreach --parallel --interlaced --jobs unlimited --all --exclude '@citlali/monorepo'"
+  },
+  "packageManager": "yarn@4.3.1",
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "syncpack": "^13.0.0"
+  }
+}

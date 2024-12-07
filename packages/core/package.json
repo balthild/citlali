@@ -1,0 +1,48 @@
+{
+  "name": "@citlali/core",
+  "version": "0.1.0",
+  "license": "MPL-2.0",
+  "scripts": {
+    "typecheck": "tsc",
+    "compile": "swc ./src --out-dir ./dist --strip-leading-paths",
+    "dev": "concurrently 'run typecheck --watch' 'run compile --watch'",
+    "build": "run typecheck && run compile",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo"
+  },
+  "type": "module",
+  "exports": {
+    "./prelude": {
+      "import": "./dist/prelude.js",
+      "types": "./dist/prelude.d.ts"
+    },
+    "./*": {
+      "import": "./dist/*/index.js",
+      "types": "./dist/*/index.d.ts"
+    }
+  },
+  "files": [
+    "./dist"
+  ],
+  "dependencies": {
+    "@rollup/plugin-multi-entry": "^6.0.1",
+    "@swc/cli": "^0.5.2",
+    "@swc/core": "^1.10.0",
+    "micromatch": "^4.0.8",
+    "rollup": "^4.28.1"
+  },
+  "devDependencies": {
+    "@types/micromatch": "^4",
+    "@types/node": "^22.10.1",
+    "chokidar": "^4.0.1",
+    "concurrently": "^9.1.0",
+    "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "@rollup/plugin-typescript": "^12.1.1"
+  },
+  "peerDependenciesMeta": {
+    "@rollup/plugin-typescript": {
+      "optional": true
+    }
+  }
+}

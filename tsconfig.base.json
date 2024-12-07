@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "strictNullChecks": true,
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "allowJs": true,
+    "checkJs": false,
+    "skipLibCheck": true,
+    "declaration": true,
+    "emitDeclarationOnly": true
+  }
+}

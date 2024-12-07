@@ -1,0 +1,10 @@
+{
+  "versionGroups": [
+    {
+      "label": "Use Workspace Protocol for Cross References",
+      "dependencies": ["$LOCAL"],
+      "dependencyTypes": ["!local"],
+      "pinVersion": "workspace:^"
+    }
+  ]
+}
