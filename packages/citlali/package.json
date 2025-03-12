@@ -9,30 +9,18 @@
     "userscripts",
     "userstyles"
   ],
-  "scripts": {
-    "typecheck": "tsc",
-    "compile": "swc ./src --out-dir ./dist --strip-leading-paths",
-    "dev": "concurrently 'run typecheck --watch' 'run compile --watch'",
-    "build": "run typecheck && run compile",
-    "clean": "rm -rf dist tsconfig.tsbuildinfo"
-  },
   "type": "module",
-  "bin": "./dist/cli.js",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "bin": "./src/citlali.js",
+  "main": "./src/index.ts",
   "files": [
-    "./dist",
+    "./src",
     "./typing"
   ],
   "dependencies": {
     "@citlali/cli": "workspace:^",
-    "@citlali/core": "workspace:^",
-    "@swc/cli": "^0.5.2",
-    "@swc/core": "^1.10.0"
+    "@citlali/core": "workspace:^"
   },
-  "devDependencies": {
-    "chokidar": "^4.0.1",
-    "concurrently": "^9.1.0",
-    "typescript": "^5.7.2"
+  "optionalDependencies": {
+    "bun": "^1.2.4"
   }
 }

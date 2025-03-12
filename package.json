@@ -3,17 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "run parallel run dev",
-    "build": "run each run build",
-    "clean": "run parallel run clean",
-    "each": "yarn workspaces foreach --topological-dev --all --exclude '@citlali/monorepo'",
-    "parallel": "yarn workspaces foreach --parallel --interlaced --jobs unlimited --all --exclude '@citlali/monorepo'"
+    "each": "bun run --filter '*' --filter '!@citlali/monorepo'",
+    "fmt": "dprint fmt && syncpack format"
   },
-  "packageManager": "yarn@4.3.1",
   "workspaces": [
     "packages/*"
   ],
+  "packageManager": "bun@1.2.4",
+  "type": "module",
   "devDependencies": {
+    "dprint": "^0.47.6",
     "syncpack": "^13.0.0"
   }
 }

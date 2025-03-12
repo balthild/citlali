@@ -1,3 +1,11 @@
-/// <reference path="../typing/global.d.ts" preserve="true" />
+/// <reference path="../typing/global.d.ts" />
 
-export * from '@citlali/core/prelude';
+import { CitlaliOptionsDefinition, UserscriptOptions } from '@citlali/core';
+
+export function defineConfig(options: CitlaliOptionsDefinition) {
+    return options;
+}
+
+export function defineUserscript(options: UserscriptOptions) {
+    return options;
+}

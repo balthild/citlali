@@ -1,17 +1,38 @@
-export async function main() {
-    const module = await forward(process.argv[2]);
-    module.main(process.argv.slice(3));
-}
+import dedent from 'dedent';
+import { configDotenv } from 'dotenv';
 
-function forward(command: string) {
+import { build } from './build';
+import { clean } from './clean';
+import { dev } from './dev';
+import { ansi } from './utils/ansi';
+
+export function main(command: string, args: string[]) {
+    configDotenv();
+
     switch (command) {
         case 'build':
-            return import('./build');
+            return build(args);
         case 'dev':
-            return import('./dev');
+            return dev(args);
         case 'clean':
-            return import('./clean');
+            return clean();
         default:
-            return import('./help');
+            return help();
     }
+}
+
+function help() {
+    console.error(dedent`
+        A userscripts and userstyles development toolkit
+
+        Usage:
+            citlali <command> [OPTIONS]
+
+        Commands:
+            ${ansi.bold('dev')}     Watch and build files on change
+            ${ansi.bold('build')}   Build files
+            ${ansi.bold('clean')}   Delete build outputs
+    `);
+
+    process.exit(1);
 }

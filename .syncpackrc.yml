@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://unpkg.com/syncpack/dist/schema.json
+
+versionGroups:
+  - label: "Use Workspace Protocol for Cross References"
+    dependencies: ["$LOCAL"]
+    dependencyTypes: ["!local"]
+    pinVersion: "workspace:^"
+
+sortFirst:
+  # Information
+  - name
+  - version
+  - description
+  - author
+  - license
+  - keywords
+  - private
+
+  # Tooling
+  - scripts
+  - workspaces
+  - packageManager
+
+  # File Structure & API
+  - type
+  - bin
+  - main
+  - module
+  - types
+  - exports
+  - files

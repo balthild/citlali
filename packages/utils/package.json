@@ -1,5 +1,5 @@
 {
-  "name": "@citlali/cli",
+  "name": "@citlali/utils",
   "version": "0.1.0",
   "license": "MPL-2.0",
   "type": "module",
@@ -8,9 +8,9 @@
     "./src"
   ],
   "dependencies": {
-    "@citlali/bundler": "workspace:^",
-    "ansi-styles": "^6.2.1",
-    "dedent": "^1.5.3",
-    "dotenv": "^16.4.7"
+    "@parcel/core": "^2.13.3"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.4"
   }
 }

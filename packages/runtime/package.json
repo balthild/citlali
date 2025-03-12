@@ -1,14 +1,10 @@
 {
-  "name": "@citlali/core",
+  "name": "@citlali/runtime",
   "version": "0.1.0",
   "license": "MPL-2.0",
   "type": "module",
   "main": "./src/index.ts",
   "files": [
     "./src"
-  ],
-  "dependencies": {
-    "@citlali/utils": "workspace:^",
-    "fast-glob": "^3.3.2"
-  }
+  ]
 }

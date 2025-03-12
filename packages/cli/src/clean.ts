@@ -1,1 +1,1 @@
-export async function main(args: string[]) {}
+export async function clean() {}
