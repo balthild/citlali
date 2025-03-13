@@ -15,9 +15,14 @@ export interface CitlaliArgs {
 type OutputName = string;
 type EntryName = string;
 
+/**
+ * Rollup doesn't support disabling code splitting, so we need to
+ * create an individual rollup instance for each entry point.
+ *
+ * See https://github.com/rollup/rollup/issues/2756
+ */
 export class Citlali {
     protected watcher?: FSWatcher;
-
     protected bundlers: Map<OutputName, Bundler> = new Map();
 
     constructor(
@@ -44,11 +49,6 @@ export class Citlali {
 
         watcher.on('add', (path) => this.add(path));
         watcher.on('unlink', (path) => this.remove(path));
-        watcher.on('change', (path) => this.update(path));
-
-        return new Promise((resolve, reject) => {
-            return watcher.on('ready', () => this.fresh().then(resolve, reject));
-        });
     }
 
     public async stop() {
@@ -61,11 +61,19 @@ export class Citlali {
 
         const existing = this.bundlers.get(output);
         if (existing) {
-            console.warn('Multiple entrypoints compile to same output file:', existing, entry);
+            if (existing.entry !== entry) {
+                console.warn('Multiple entrypoints compile to same output file:');
+                console.warn(existing.entry);
+                console.warn(entry);
+            }
+
             return;
         }
 
-        this.bundlers.set(output, new Bundler(this, entry));
+        const bundler = new Bundler(this, entry);
+        await bundler.start();
+
+        this.bundlers.set(output, bundler);
     }
 
     protected async remove(entry: EntryName) {
@@ -73,23 +81,13 @@ export class Citlali {
         if (!output) return;
 
         const existing = this.bundlers.get(output);
-        if (!existing || existing.entry !== entry) {
+        if (existing?.entry !== entry) {
             return;
         }
 
+        existing.stop();
+
         this.bundlers.delete(output);
-    }
-
-    protected async update(path: string) {
-        for (const bundler of this.bundlers.values()) {
-            await bundler.trigger(path);
-        }
-    }
-
-    protected async fresh() {
-        for (const bundler of this.bundlers.values()) {
-            await bundler.build();
-        }
     }
 
     public getOutputName(entry: EntryName) {
@@ -102,16 +100,23 @@ export class Citlali {
             dir = dirname(dir);
         }
 
-        switch (ext) {
-            case '.js':
-            case '.jsx':
-            case '.ts':
-            case '.tsx':
-                return join(dir, `${name}.js`);
-
-            case '.css':
-            case '.scss':
-                return join(dir, `${name}.css`);
+        if (/^\.[jt]sx?$/.test(ext)) {
+            return join(dir, `${name}.js`);
         }
+
+        if (/^\.s?css$/.test(ext)) {
+            return join(dir, `${name}.css`);
+        }
+    }
+
+    public getOutputPath(entry: EntryName) {
+        const name = this.getOutputName(entry);
+        if (!name) return;
+
+        return join(this.options.dist, name);
+    }
+
+    public getEntryPath(entry: EntryName) {
+        return join(this.options.src, entry);
     }
 }

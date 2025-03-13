@@ -9,6 +9,8 @@
   ],
   "dependencies": {
     "@citlali/utils": "workspace:^",
-    "fast-glob": "^3.3.2"
+    "@rollup/plugin-typescript": "^12.1.2",
+    "fast-glob": "^3.3.2",
+    "rollup": "^4.35.0"
   }
 }

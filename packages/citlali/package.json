@@ -14,7 +14,7 @@
   "main": "./src/index.ts",
   "files": [
     "./src",
-    "./typing"
+    "./types"
   ],
   "dependencies": {
     "@citlali/cli": "workspace:^",

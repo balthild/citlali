@@ -1,9 +1,11 @@
-import { pathToFileURL } from 'url';
-
 import FastGlob from 'fast-glob';
+import { RollupOptions } from 'rollup';
 
 import { evalModule } from '@citlali/utils';
 import { AsyncGetter, ExplicitPartial } from '@citlali/utils';
+
+export type RollupOptionsCustom = Pick<RollupOptions, 'external' | 'jsx' | 'plugins' | 'treeshake'>;
+export type RollupOptionsOverride = ExplicitPartial<Omit<RollupOptionsCustom, 'plugins'>>;
 
 export interface CitlaliOptions {
     /**
@@ -29,6 +31,12 @@ export interface CitlaliOptions {
      * Default: `false`
      */
     minify: false;
+
+    /**
+     * Custom rollup configutation.
+     * Default: `{}`
+     */
+    rollup?: RollupOptionsCustom;
 }
 
 export type CitlaliOptionsDefinition = Partial<CitlaliOptions> | AsyncGetter<Partial<CitlaliOptions>>;
@@ -36,18 +44,12 @@ export type CitlaliOptionsDefinition = Partial<CitlaliOptions> | AsyncGetter<Par
 export async function loadConfig() {
     const paths = await FastGlob('citlali.config.{js,ts}');
     if (paths.length > 1) {
-        throw new Error('Multiple config files found. Please keep only one or specify which config to use.');
+        throw new Error('Multiple config files found. Please keep only one or specify which to use.');
     }
 
     const [path] = paths;
     if (!path) {
         return resolveConfig();
-    }
-
-    if (path.endsWith('.js')) {
-        const url = pathToFileURL(path);
-        const module = await import(url.href);
-        return resolveConfig(module.default);
     }
 
     const module = await evalModule(path);

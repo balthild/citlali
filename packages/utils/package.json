@@ -8,7 +8,8 @@
     "./src"
   ],
   "dependencies": {
-    "@parcel/core": "^2.13.3"
+    "magicast": "^0.3.5",
+    "rollup": "^4.35.0"
   },
   "devDependencies": {
     "@types/bun": "^1.2.4"

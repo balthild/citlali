@@ -1,46 +1,60 @@
+import { OutputOptions, rollup, RollupOptions, RollupWatcher, watch } from 'rollup';
+import { Plugin } from 'rollup';
+
 import { Citlali } from './citlali';
-import { StylesEmitter } from './userscript/emitter';
-import { EntryPointPlugin } from './userscript/entry';
-import { InlineStylePlugin } from './userscript/style';
+import { UserscriptPlugin } from './rollup/userscript';
 
 export class Bundler {
-    public readonly citlali: Citlali;
-    public readonly entry: string;
-    public readonly sources: Set<string>;
+    protected watcher?: RollupWatcher;
 
-    constructor(citlali: Citlali, entry: string) {
-        this.citlali = citlali;
-        this.entry = entry;
-        this.sources = new Set([entry]);
-    }
+    constructor(
+        public readonly citlali: Citlali,
+        public readonly entry: string,
+    ) {}
 
-    public async trigger(path: string) {
-        if (this.sources.has(path)) {
+    public async start() {
+        if (this.citlali.args.watch) {
+            await this.watch();
+        } else {
             await this.build();
         }
     }
 
-    public async build() {
-        const styles = new StylesEmitter();
+    public async stop() {
+        await this.watcher?.close();
+    }
 
-        const out = await Bun.build({
-            entrypoints: [this.entry],
-            target: 'browser',
-            format: 'esm',
-            packages: 'external',
-            splitting: false,
-            plugins: [InlineStylePlugin(styles)],
-        });
+    protected async build() {
+        const options = await this.getRollupOptions();
+        const build = await rollup(options);
+        await build.write(options.output as OutputOptions);
+    }
 
-        await Bun.build({
-            entrypoints: [this.entry],
-            outdir: this.citlali.options.dist,
-            minify: this.citlali.options.minify,
-            target: 'browser',
-            format: 'iife',
-            splitting: false,
-            naming: this.citlali.getOutputName(this.entry),
-            plugins: [EntryPointPlugin(this.entry, styles, out.outputs)],
-        });
+    protected async watch() {
+        const options = await this.getRollupOptions();
+        this.watcher = watch(options);
+    }
+
+    protected async getRollupOptions(): Promise<RollupOptions> {
+        const plugins: Plugin[] = [];
+
+        if (/\.user\.tsx?$/.test(this.entry)) {
+            const typescript = await import('@rollup/plugin-typescript');
+            plugins.push(typescript.default());
+        }
+
+        if (/\.user\.[jt]sx?$/.test(this.entry)) {
+            plugins.push(UserscriptPlugin(this));
+        }
+
+        return {
+            plugins,
+            input: 'citlali:userscript',
+            output: {
+                file: this.citlali.getOutputPath(this.entry),
+                format: 'iife',
+                inlineDynamicImports: true,
+            },
+        };
     }
 }

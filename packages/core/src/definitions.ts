@@ -6,8 +6,8 @@ export interface UserscriptOptions {
     version: string;
     author: string;
     description?: string;
-    match?: string;
-    grant?: string;
+    match?: string[];
+    grant?: string[];
 
     main: () => Async<void>;
 }

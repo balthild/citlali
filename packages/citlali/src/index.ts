@@ -1,4 +1,4 @@
-/// <reference path="../typing/global.d.ts" />
+/// <reference path="../types/global.d.ts" />
 
 import { CitlaliOptionsDefinition, UserscriptOptions } from '@citlali/core';
 
