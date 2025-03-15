@@ -9,18 +9,26 @@
     "userscripts",
     "userstyles"
   ],
+  "scripts": {
+    "dev": "rollup -c -w",
+    "build": "rollup -c"
+  },
   "type": "module",
-  "bin": "./src/citlali.js",
-  "main": "./src/index.ts",
+  "bin": "./dist/citlali.js",
+  "main": "./dist/index.js",
+  "types": "./src/index.ts",
   "files": [
     "./src",
-    "./types"
+    "./types",
+    "./dist"
   ],
   "dependencies": {
     "@citlali/cli": "workspace:^",
     "@citlali/core": "workspace:^"
   },
-  "optionalDependencies": {
-    "bun": "^1.2.4"
+  "devDependencies": {},
+  "scripts1": {
+    "build": "bun build ./src/* --outdir=./dist --target=node --external=lightningcss",
+    "dev": "bun run build --watch"
   }
 }

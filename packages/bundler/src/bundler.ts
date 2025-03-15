@@ -1,5 +1,4 @@
-import { OutputOptions, rollup, RollupOptions, RollupWatcher, watch } from 'rollup';
-import { Plugin } from 'rollup';
+import { OutputOptions, Plugin, rollup, RollupOptions, RollupWatcher, watch } from 'rollup';
 
 import { Citlali } from './citlali';
 import { UserscriptPlugin } from './rollup/userscript';

@@ -1,11 +1,11 @@
 import { fileURLToPath } from 'url';
 
-import { transform } from 'lightningcss';
+import { CSSModuleExports, transform } from 'lightningcss';
 import { Plugin, PluginContext } from 'rollup';
 import { compile } from 'sass';
 
 import { UserscriptOptions } from '@citlali/core';
-import { cleanEntryCode, evalModuleCode } from '@citlali/utils';
+import { cleanEntrypoint, evalModuleCode, javascript } from '@citlali/utils';
 
 import { Bundler } from '../bundler';
 
@@ -25,7 +25,7 @@ export function UserscriptPlugin(bundler: Bundler): Plugin {
 
         load(id) {
             if (id === 'citlali:userscript') {
-                return /* javascript */ `
+                return javascript`
                     import userscript from 'citlali:entrypoint';
                     userscript.main();
                 `;
@@ -40,7 +40,7 @@ export function UserscriptPlugin(bundler: Bundler): Plugin {
 
         async banner(chunk) {
             const entry = this.getModuleInfo(bundler.entry)!;
-            const clean = cleanEntryCode(entry.code!);
+            const clean = cleanEntrypoint(entry.code!);
             const module = await evalModuleCode(bundler.entry, clean.code);
             const options = module.default as UserscriptOptions;
 
@@ -81,12 +81,12 @@ function transformStyle(ctx: PluginContext, code: string, id: string) {
     });
 
     const names = Object.fromEntries(
-        Object.entries(module.exports ?? {})
+        Object.entries(module.exports as CSSModuleExports ?? {})
             .map(([key, value]) => [key, value.name]),
     );
 
-    return /* javascript */ `
-        const classes = ${JSON.stringify(names, undefined, 2)};
+    return javascript`
+        const classes = ${JSON.stringify(names, undefined, 4)};
         export default classes;
 
         ${injectStyle(ctx, code, id)}
@@ -105,11 +105,14 @@ function transformSCSS(ctx: PluginContext, code: string, id: string) {
 }
 
 function injectStyle(ctx: PluginContext, code: string, id: string) {
-    return /* javascript */ `
+    // TODO: type definition of rollup lacks the attributes field
+    const { attributes } = ctx.getModuleInfo(id) as any;
+
+    return javascript`
         export const cssText = ${toRawStringLiteral(code)};
 
         const style = document.createElement('style');
-        style.id = ${toRawStringLiteral(id)}
+        style.id = ${toRawStringLiteral(attributes.id ?? crypto.randomUUID())}
         style.textContent = cssText;
         document.head.appendChild(style);
     `;

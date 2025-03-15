@@ -29,3 +29,11 @@ sortFirst:
   - types
   - exports
   - files
+
+sortAz:
+  - bin
+  - keywords
+  - dependencies
+  - devDependencies
+  - peerDependencies
+  - resolutions

@@ -8,6 +8,14 @@ declare module '*.module.css' {
     export default classes;
 }
 
+declare module '*.scss' {
+    export const cssText: string;
+}
+
+declare module '*.css' {
+    export const cssText: string;
+}
+
 declare module 'text:*' {
     const text: string;
     export default text;

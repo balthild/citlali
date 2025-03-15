@@ -1,0 +1,20 @@
+{
+  "name": "@citlali/workspace",
+  "version": "0.1.0",
+  "license": "MPL-2.0",
+  "type": "module",
+  "bin": {
+    "citlali-workspace": "./src/scripts.js"
+  },
+  "main": "./src/index.js",
+  "files": [
+    "./src"
+  ],
+  "dependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "dedent": "^1.5.3",
+    "rollup": "^4.35.0",
+    "typescript": "^5.8.2"
+  }
+}

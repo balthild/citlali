@@ -22,7 +22,7 @@ export function main(command: string, args: string[]) {
 }
 
 function help() {
-    console.error(dedent`
+    console.log(dedent`
         A userscripts and userstyles development toolkit
 
         Usage:

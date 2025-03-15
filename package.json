@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "each": "bun run --filter '*' --filter '!@citlali/monorepo'",
+    "each": "bun run --filter '!@citlali/monorepo' --filter '!@citlali/workspace'",
     "fmt": "dprint fmt && syncpack format"
   },
   "workspaces": [

@@ -2,9 +2,16 @@
   "name": "@citlali/runtime",
   "version": "0.1.0",
   "license": "MPL-2.0",
+  "scripts": {
+    "dev": "rollup -c -w",
+    "build": "rollup -c"
+  },
   "type": "module",
-  "main": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./src/index.ts",
   "files": [
-    "./src"
-  ]
+    "./src",
+    "./dist"
+  ],
+  "devDependencies": {}
 }

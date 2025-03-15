@@ -10,7 +10,7 @@ import { parseModule, ProxifiedModule } from 'magicast';
  * 3. Removes unused imports
  * 3. Removes value-less, side-effect only imports (like `import "./styles.css"` or `import "webextension-polyfill"`)
  */
-export function cleanEntryCode(code: string, maxDepth: number = 10): { code: string; map?: string; } {
+export function cleanEntrypoint(code: string, maxDepth: number = 10): { code: string; map?: string; } {
     const mod = parseModule(code);
     emptyMainFunction(mod);
     let removedCount = 0;
@@ -20,11 +20,12 @@ export function cleanEntryCode(code: string, maxDepth: number = 10): { code: str
         removedCount += removeUnusedTopLevelVariables(mod);
         removedCount += removeUnusedTopLevelFunctions(mod);
         removedCount += removeUnusedImports(mod);
-
-        // Extra
-        removedCount += removeStyleImports(mod);
     } while (removedCount > 0 && depth++ <= maxDepth);
     removeSideEffectImports(mod);
+
+    // Extra
+    removeStyleImports(mod);
+
     return mod.generate();
 }
 
@@ -99,19 +100,6 @@ function removeUnusedImports(mod: ProxifiedModule): number {
     return deletedCount;
 }
 
-function removeStyleImports(mod: ProxifiedModule): number {
-    const imports = Object.entries(mod.imports);
-
-    let deletedCount = 0;
-    imports.forEach(([name, item]) => {
-        if (/\.s?css$/.test(item.from)) {
-            delete mod.imports[name];
-            deletedCount++;
-        }
-    });
-    return deletedCount;
-}
-
 // TODO: Do a more complex declaration analysis where shadowed variables are detected and ignored.
 // Right now, this code assumes there are no shadowed variables.
 function findUsedIdentifiers(simpleAst: any) {
@@ -162,6 +150,16 @@ function deleteImportAst(
 
 function removeSideEffectImports(mod: ProxifiedModule): void {
     deleteImportAst(mod, (node) => node.specifiers.length === 0);
+}
+
+function removeStyleImports(mod: ProxifiedModule) {
+    const imports = Object.entries(mod.imports);
+
+    imports.forEach(([name, item]) => {
+        if (/\.s?css$/.test(item.from)) {
+            delete mod.imports[name];
+        }
+    });
 }
 
 /**
