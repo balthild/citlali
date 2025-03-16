@@ -5,8 +5,7 @@ export default function help() {
         Citlali Workspace Scripts
 
         Usage:
-            citlali-workspace dev [...entrypoints]
-            citlali-workspace build [...entrypoints]
+            citlali-workspace rollup [rollup options]
             citlali-workspace clean
     `);
 }
