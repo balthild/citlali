@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "license": "MPL-2.0",
   "scripts": {
-    "dev": "rollup -c -w",
-    "build": "rollup -c"
+    "dev": "citlali-workspace rollup -c -w",
+    "build": "citlali-workspace rollup -c"
   },
   "type": "module",
   "main": "./dist/index.js",
@@ -15,8 +15,9 @@
   ],
   "dependencies": {
     "@citlali/bundler": "workspace:^",
+    "@citlali/core": "workspace:^",
+    "@citlali/utils": "workspace:^",
     "ansi-styles": "^6.2.1",
-    "dedent": "^1.5.3",
     "dotenv": "^16.4.7"
   },
   "devDependencies": {

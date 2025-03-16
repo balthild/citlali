@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "license": "MPL-2.0",
   "scripts": {
-    "dev": "rollup -c -w",
-    "build": "rollup -c"
+    "dev": "citlali-workspace rollup -c -w",
+    "build": "citlali-workspace rollup -c"
   },
   "type": "module",
   "main": "./dist/index.js",
@@ -15,15 +15,15 @@
   ],
   "dependencies": {
     "@citlali/core": "workspace:^",
-    "@types/lodash-es": "^4.17.12",
+    "@citlali/utils": "workspace:^",
+    "@rollup/plugin-typescript": "^12.1.2",
     "async-lock": "^1.4.1",
     "chokidar": "^4.0.1",
     "fast-glob": "^3.3.2",
     "lightningcss": "^1.29.2",
-    "lodash-es": "^4.17.21",
+    "merge-anything": "^6.0.4",
     "micromatch": "^4.0.8",
     "postcss": "^8.4.49",
-    "postcss-modules": "^6.0.1",
     "postcss-scss": "^4.0.9",
     "postcss-value-parser": "^4.2.0",
     "rollup": "^4.35.0"
@@ -31,13 +31,12 @@
   "devDependencies": {
     "@types/async-lock": "^1.4.2",
     "@types/micromatch": "^4.0.9",
-    "sass": "^1",
-    "tslib": "^2.8",
-    "typescript": "^5"
+    "@types/node": "^22.13.10",
+    "sass": "^1.85.1",
+    "tslib": "^2.8.1",
+    "typescript": "^5.8.2"
   },
   "peerDependencies": {
-    "sass": "^1",
-    "tslib": "^2.8",
-    "typescript": "^5"
+    "sass": "^1"
   }
 }

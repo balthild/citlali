@@ -1,18 +1,22 @@
 {
   "name": "@citlali/monorepo",
   "version": "0.1.0",
+  "license": "MPL-2.0",
   "private": true,
   "scripts": {
-    "each": "bun run --filter '!@citlali/monorepo' --filter '!@citlali/workspace'",
+    "each": "yarn workspaces foreach --all --interlaced --no-private",
+    "dev": "run each --parallel run dev",
+    "build": "run each --topological-dev run build",
     "fmt": "dprint fmt && syncpack format"
   },
   "workspaces": [
     "packages/*"
   ],
-  "packageManager": "bun@1.2.4",
+  "packageManager": "yarn@4.7.0",
   "type": "module",
   "devDependencies": {
     "dprint": "^0.47.6",
-    "syncpack": "^13.0.0"
+    "syncpack": "^13.0.0",
+    "typescript": "^5.8.2"
   }
 }

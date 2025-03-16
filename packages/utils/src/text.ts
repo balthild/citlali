@@ -1,7 +1,7 @@
 /**
- * `dedent` may not work well when the values contain newlines.
+ * Similar to the `dedent` package, but ignores newlines in the interpolated values.
  */
-export function javascript(template: TemplateStringsArray, ...values: unknown[]): string {
+export function dedent(template: TemplateStringsArray, ...values: unknown[]): string {
     let indent = Math.min(
         ...template.raw
             .flatMap((x) => x.split('\n').slice(1))
@@ -15,3 +15,7 @@ export function javascript(template: TemplateStringsArray, ...values: unknown[])
 
     return String.raw({ ...template, raw }, ...values);
 }
+
+export const javascript = dedent;
+export const css = dedent;
+export const html = dedent;

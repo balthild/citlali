@@ -10,8 +10,8 @@
     "userstyles"
   ],
   "scripts": {
-    "dev": "rollup -c -w",
-    "build": "rollup -c"
+    "dev": "citlali-workspace rollup -c -w",
+    "build": "citlali-workspace rollup -c"
   },
   "type": "module",
   "bin": "./dist/citlali.js",
@@ -26,9 +26,7 @@
     "@citlali/cli": "workspace:^",
     "@citlali/core": "workspace:^"
   },
-  "devDependencies": {},
-  "scripts1": {
-    "build": "bun build ./src/* --outdir=./dist --target=node --external=lightningcss",
-    "dev": "bun run build --watch"
+  "devDependencies": {
+    "@types/node": "^22.13.10"
   }
 }

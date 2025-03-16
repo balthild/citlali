@@ -1,5 +1,6 @@
-import dedent from 'dedent';
 import { configDotenv } from 'dotenv';
+
+import { dedent } from '@citlali/utils';
 
 import { build } from './build';
 import { clean } from './clean';

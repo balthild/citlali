@@ -2,10 +2,7 @@ import FastGlob from 'fast-glob';
 import { RollupOptions } from 'rollup';
 
 import { evalModule } from '@citlali/utils';
-import { AsyncGetter, ExplicitPartial } from '@citlali/utils';
-
-export type RollupOptionsCustom = Pick<RollupOptions, 'external' | 'jsx' | 'plugins' | 'treeshake'>;
-export type RollupOptionsOverride = ExplicitPartial<Omit<RollupOptionsCustom, 'plugins'>>;
+import { AsyncGetter } from '@citlali/utils';
 
 export interface CitlaliOptions {
     /**
@@ -33,10 +30,10 @@ export interface CitlaliOptions {
     minify: false;
 
     /**
-     * Custom rollup configutation.
+     * Custom rollup configutation. Note that `input` and `output` will be overridden.
      * Default: `{}`
      */
-    rollup?: RollupOptionsCustom;
+    rollup?: RollupOptions;
 }
 
 export type CitlaliOptionsDefinition = Partial<CitlaliOptions> | AsyncGetter<Partial<CitlaliOptions>>;
@@ -67,6 +64,7 @@ async function resolveConfig(definition: CitlaliOptionsDefinition = {}) {
         src: 'src',
         dist: 'dist',
         minify: false,
+        rollup: {},
     };
 
     for (const [key, value] of Object.entries(definition)) {

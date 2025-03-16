@@ -74,14 +74,14 @@ function transformStyle(ctx: PluginContext, code: string, id: string) {
         return injectStyle(this, code, id);
     }
 
-    const module = transform({
+    const result = transform({
         filename: id,
         cssModules: true,
         code: Buffer.from(code),
     });
 
     const names = Object.fromEntries(
-        Object.entries(module.exports as CSSModuleExports ?? {})
+        Object.entries(result.exports as CSSModuleExports ?? {})
             .map(([key, value]) => [key, value.name]),
     );
 

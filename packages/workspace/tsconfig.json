@@ -8,7 +8,7 @@
     "moduleResolution": "bundler",
     "moduleDetection": "force",
     "esModuleInterop": true,
-    "noEmit": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noEmit": true
   }
 }

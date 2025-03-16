@@ -1,4 +1,5 @@
-import { OutputOptions, Plugin, rollup, RollupOptions, RollupWatcher, watch } from 'rollup';
+import { mergeAndConcat } from 'merge-anything';
+import { defineConfig, InputPluginOption, OutputOptions, rollup, RollupWatcher, watch } from 'rollup';
 
 import { Citlali } from './citlali';
 import { UserscriptPlugin } from './rollup/userscript';
@@ -34,8 +35,9 @@ export class Bundler {
         this.watcher = watch(options);
     }
 
-    protected async getRollupOptions(): Promise<RollupOptions> {
-        const plugins: Plugin[] = [];
+    protected async getRollupOptions() {
+        const custom = this.citlali.options.rollup;
+        const plugins: InputPluginOption[] = [custom.plugins];
 
         if (/\.user\.tsx?$/.test(this.entry)) {
             const typescript = await import('@rollup/plugin-typescript');
@@ -46,7 +48,11 @@ export class Bundler {
             plugins.push(UserscriptPlugin(this));
         }
 
-        return {
+        delete custom.plugins;
+        delete custom.input;
+        delete custom.output;
+
+        const base = defineConfig({
             plugins,
             input: 'citlali:userscript',
             output: {
@@ -54,6 +60,8 @@ export class Bundler {
                 format: 'iife',
                 inlineDynamicImports: true,
             },
-        };
+        });
+
+        return mergeAndConcat(base, custom);
     }
 }

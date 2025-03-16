@@ -4,20 +4,24 @@ import { unlink } from 'fs/promises';
 import { dirname, extname, isAbsolute } from 'path';
 import { pathToFileURL } from 'url';
 
+import typescript from '@rollup/plugin-typescript';
 import { Plugin, rollup } from 'rollup';
+
+import { dedent } from './text';
 
 export async function ensureDependencies(...deps: string[]) {
     const results = await Promise.allSettled(deps.map((x) => import(x)));
 
-    const missing: string[] = [];
-    for (const [i, result] of results.entries()) {
-        if (result.status === 'rejected') {
-            missing.push(deps[i]);
-        }
-    }
+    const missing = results.entries()
+        .filter(([i, x]) => x.status === 'rejected')
+        .map(([i, x]) => deps[i])
+        .toArray();
 
     if (missing.length > 0) {
-        throw new Error('Missing dependency. Please install them:\n  bun add ' + missing.join(' '));
+        throw new Error(dedent`
+            Missing build dependencies. Please install them:
+                yarn add --dev ${missing.join(' ')}
+        `);
     }
 }
 
@@ -27,11 +31,21 @@ export async function evalModule<T = any>(path: string): Promise<T> {
 }
 
 export async function evalModuleCode<T = any>(path: string, code: string): Promise<T> {
-    const plugins = [EvalPlugin(code)];
+    const plugins = [EvalPlugin(path, code)];
 
     if (extname(path) === '.ts') {
-        const typescript = await import('@rollup/plugin-typescript');
-        plugins.push(typescript.default());
+        plugins.push(typescript({
+            tsconfig: false,
+            include: [path],
+            compilerOptions: {
+                allowSyntheticDefaultImports: true,
+                target: 'esnext',
+                module: 'preserve',
+                moduleResolution: 'node',
+                moduleDetection: 'force',
+                esModuleInterop: true,
+            },
+        }));
     }
 
     const build = await rollup({
@@ -60,7 +74,7 @@ export async function evalJsModuleCode<T = any>(path: string, code: string): Pro
     }
 }
 
-function EvalPlugin(code: string): Plugin {
+function EvalPlugin(path: string, code: string): Plugin {
     return {
         name: 'citlali-rollup-eval',
 

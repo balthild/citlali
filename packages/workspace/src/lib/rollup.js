@@ -1,4 +1,4 @@
-import nodeResolve from '@rollup/plugin-node-resolve';
+import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import { defineConfig, rollup, watch } from 'rollup';
 
@@ -26,7 +26,7 @@ export function createRollupConfig(entrypoints) {
     return defineConfig({
         plugins: [
             typescript(),
-            nodeResolve({
+            resolve({
                 extensions: ['.ts', '.mts', '.js', '.mjs', '.json', '.node'],
             }),
         ],

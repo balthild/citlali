@@ -2,6 +2,7 @@
   "name": "@citlali/workspace",
   "version": "0.1.0",
   "license": "MPL-2.0",
+  "private": true,
   "type": "module",
   "bin": {
     "citlali-workspace": "./src/scripts.js"
@@ -15,6 +16,7 @@
     "@rollup/plugin-typescript": "^12.1.2",
     "dedent": "^1.5.3",
     "rollup": "^4.35.0",
+    "tslib": "^2.8.1",
     "typescript": "^5.8.2"
   }
 }
