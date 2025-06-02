@@ -14,14 +14,12 @@
     "./dist"
   ],
   "dependencies": {
-    "@rollup/plugin-typescript": "^12.1.2",
+    "@swc/core": "^1.11.29",
     "magicast": "^0.3.5",
-    "rollup": "^4.41.1"
+    "rollup": "^4.41.1",
+    "rollup-plugin-swc3": "^0.12.1"
   },
   "devDependencies": {
     "@types/node": "^22.15.29"
-  },
-  "peerDependencies": {
-    "typescript": "^5.8.2"
   }
 }

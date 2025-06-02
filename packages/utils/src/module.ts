@@ -4,8 +4,8 @@ import { unlink } from 'fs/promises';
 import { dirname, extname, isAbsolute } from 'path';
 import { pathToFileURL } from 'url';
 
-import typescript from '@rollup/plugin-typescript';
 import { Plugin, rollup } from 'rollup';
+import swc from 'rollup-plugin-swc3';
 
 import { dedent } from './text';
 
@@ -33,24 +33,18 @@ export async function evalModule<T = any>(path: string): Promise<T> {
 export async function evalModuleCode<T = any>(path: string, code: string): Promise<T> {
     const plugins = [EvalPlugin(path, code)];
 
-    if (extname(path) === '.ts') {
-        plugins.push(typescript({
+    if (/\.tsx?$/.test(path)) {
+        plugins.push(swc({
+            extensions: ['.ts', '.tsx'],
             tsconfig: false,
-            include: [path],
-            compilerOptions: {
-                allowSyntheticDefaultImports: true,
-                target: 'esnext',
-                module: 'preserve',
-                moduleResolution: 'node',
-                moduleDetection: 'force',
-                esModuleInterop: true,
-            },
+            swcrc: false,
+            isModule: true,
         }));
     }
 
     const build = await rollup({
         plugins,
-        input: 'citlali:eval',
+        input: `citlali:eval:${path}`,
         treeshake: true,
         external: (id: string) => (id[0] !== '.' && !isAbsolute(id)) || id.slice(-5) === '.json',
     });
@@ -79,13 +73,13 @@ function EvalPlugin(path: string, code: string): Plugin {
         name: 'citlali-rollup-eval',
 
         resolveId(source, importer, options) {
-            if (source === 'citlali:eval') {
+            if (source === `citlali:eval:${path}`) {
                 return source;
             }
         },
 
         load(id) {
-            if (id === 'citlali:eval') {
+            if (id === `citlali:eval:${path}`) {
                 return code;
             }
         },

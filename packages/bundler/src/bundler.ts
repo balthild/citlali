@@ -1,3 +1,4 @@
+import typescript from '@rollup/plugin-typescript';
 import { mergeAndConcat } from 'merge-anything';
 import { defineConfig, InputPluginOption, OutputOptions, rollup, RollupWatcher, watch } from 'rollup';
 
@@ -39,8 +40,7 @@ export class Bundler {
         const plugins: InputPluginOption[] = [];
 
         if (/\.user\.tsx?$/.test(this.entry)) {
-            const typescript = await import('@rollup/plugin-typescript');
-            plugins.push(typescript.default());
+            plugins.push(typescript());
         }
 
         if (/\.user\.[jt]sx?$/.test(this.entry)) {

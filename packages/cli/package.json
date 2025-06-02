@@ -24,6 +24,6 @@
     "@types/node": "^22.15.29"
   },
   "peerDependencies": {
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.3"
   }
 }
