@@ -119,7 +119,7 @@ export class Citlali {
         let dir = relative(this.options.src, dirname(entry));
 
         if (name === 'index.user') {
-            name = basename(dir);
+            name = basename(dir) + '.user';
             dir = dirname(dir);
         }
 
