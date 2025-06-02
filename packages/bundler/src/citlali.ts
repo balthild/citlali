@@ -1,6 +1,8 @@
+import { Server } from 'http';
 import { basename, dirname, extname, join, relative } from 'path';
 
 import { FSWatcher, watch } from 'chokidar';
+import { createServer } from 'http-server';
 import micromatch from 'micromatch';
 
 import { CitlaliOptions } from '@citlali/core';
@@ -8,7 +10,7 @@ import { CitlaliOptions } from '@citlali/core';
 import { Bundler } from './bundler';
 
 export interface CitlaliArgs {
-    dev: boolean;
+    serve: boolean;
     watch: boolean;
 }
 
@@ -22,6 +24,7 @@ type EntryName = string;
  * See https://github.com/rollup/rollup/issues/2756
  */
 export class Citlali {
+    protected server?: Server;
     protected watcher?: FSWatcher;
     protected bundlers: Map<OutputName, Bundler> = new Map();
 
@@ -31,7 +34,29 @@ export class Citlali {
     ) {}
 
     public async start() {
-        const watcher = this.watcher = watch(this.options.src, {
+        this.server = this.serve();
+        this.watcher = this.watch();
+    }
+
+    public async stop() {
+        await this.watcher?.close();
+        await new Promise<void>((resolve, reject) => {
+            this.server?.close((err) => err ? reject(err) : resolve());
+        });
+    }
+
+    protected serve() {
+        console.log('┌─────────────────────────────────────────────┐');
+        console.log('│ Running dev server on http://localhost:3000 │');
+        console.log('└─────────────────────────────────────────────┘');
+
+        const server = createServer({ root: this.options.dist });
+        server.listen(3000);
+        return server;
+    }
+
+    protected watch() {
+        const watcher = watch(this.options.src, {
             persistent: this.args.watch,
             ignored: (path, stats) => {
                 if (!stats?.isFile()) return false;
@@ -49,10 +74,8 @@ export class Citlali {
 
         watcher.on('add', (path) => this.add(path));
         watcher.on('unlink', (path) => this.remove(path));
-    }
 
-    public async stop() {
-        await this.watcher?.close();
+        return watcher;
     }
 
     protected async add(entry: EntryName) {
