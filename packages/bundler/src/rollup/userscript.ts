@@ -113,27 +113,17 @@ function injectStyle(ctx: PluginContext, code: string, id: string) {
     const { attributes } = ctx.getModuleInfo(id);
 
     return javascript`
-        export const cssText = ${toRawStringLiteral(code)};
+        export const cssText = ${toTemplateLiteral(code)};
 
         const style = document.createElement('style');
-        style.id = ${toRawStringLiteral(attributes.id ?? crypto.randomUUID())}
+        style.id = ${toTemplateLiteral(attributes.id ?? crypto.randomUUID())}
         style.textContent = cssText;
         document.head.appendChild(style);
     `;
 }
 
-function toRawStringLiteral(value: string) {
-    const escaped = value.replace(/[`\\]/g, (ch) => {
-        switch (ch) {
-            case '\\':
-                return '\\\\';
-            case '`':
-                return '\\`';
-            default:
-                return ch;
-        }
-    });
-
+function toTemplateLiteral(value: string) {
+    const escaped = value.replace(/[`\$\\]/g, (ch) => '\\' + ch);
     return `\`${escaped}\``;
 }
 
