@@ -27,13 +27,25 @@ export class Bundler {
     }
 
     protected async build() {
+        const start = performance.now();
+        const input = chalk.bold(this.entry);
+        const dist = chalk.bold(this.citlali.options.dist);
+        const output = chalk.bold(this.citlali.getOutputPath(this.entry));
+        console.log(`${input} → ${dist}...`);
+
         const options = await this.getRollupOptions();
         const build = await rollup(options);
         await build.write(options.output as OutputOptions);
+
+        const elapsed = chalk.bold(Math.round(performance.now() - start) + 'ms');
+        console.log(chalk.green(`created ${output} in ${elapsed}`));
     }
 
     protected async watch() {
-        let start: DOMHighResTimeStamp;
+        let start = performance.now();
+        const input = chalk.bold(this.entry);
+        const dist = chalk.bold(this.citlali.options.dist);
+        const output = chalk.bold(this.citlali.getOutputPath(this.entry));
 
         const options = await this.getRollupOptions();
         this.watcher = watch(options);
@@ -45,14 +57,11 @@ export class Bundler {
                 }
 
                 case 'BUNDLE_START': {
-                    const input = chalk.bold(this.entry);
-                    const output = chalk.bold(this.citlali.options.dist);
-                    console.log(chalk.cyan(`bundles ${input} → ${output}...`));
+                    console.log(chalk.cyan(`bundles ${input} → ${dist}...`));
                     break;
                 }
 
                 case 'BUNDLE_END': {
-                    const output = chalk.bold(this.citlali.getOutputPath(this.entry));
                     const elapsed = chalk.bold(Math.round(performance.now() - start) + 'ms');
                     console.log(chalk.green(`created ${output} in ${elapsed}`));
                     break;
