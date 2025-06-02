@@ -153,13 +153,7 @@ function removeSideEffectImports(mod: ProxifiedModule): void {
 }
 
 function removeStyleImports(mod: ProxifiedModule) {
-    const imports = Object.entries(mod.imports);
-
-    imports.forEach(([name, item]) => {
-        if (/\.s?css$/.test(item.from)) {
-            delete mod.imports[name];
-        }
-    });
+    deleteImportAst(mod, (node) => /\.s?css$/.test(node.source.value));
 }
 
 /**

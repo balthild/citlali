@@ -27,6 +27,9 @@
     "@citlali/core": "workspace:^"
   },
   "devDependencies": {
-    "@types/node": "^22.13.10"
+    "@types/node": "^22.15.29"
+  },
+  "peerDependencies": {
+    "typescript": "^5.8.2"
   }
 }

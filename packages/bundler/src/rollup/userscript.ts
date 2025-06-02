@@ -15,7 +15,7 @@ export function UserscriptPlugin(bundler: Bundler): Plugin {
 
         resolveId(source, importer, options) {
             if (source === 'citlali:entrypoint') {
-                return bundler.entry;
+                return this.resolve(bundler.entry);
             }
 
             if (source.startsWith('citlali:')) {
@@ -39,8 +39,13 @@ export function UserscriptPlugin(bundler: Bundler): Plugin {
         },
 
         async banner(chunk) {
-            const entry = this.getModuleInfo(bundler.entry)!;
-            const clean = cleanEntrypoint(entry.code!);
+            if (chunk.facadeModuleId !== 'citlali:userscript') {
+                return;
+            }
+
+            const entry = await this.resolve(bundler.entry);
+            const { code } = this.getModuleInfo(entry.id)!;
+            const clean = cleanEntrypoint(code!);
             const module = await evalModuleCode(bundler.entry, clean.code);
             const options = module.default as UserscriptOptions;
 
@@ -71,7 +76,7 @@ function transformStyle(ctx: PluginContext, code: string, id: string) {
     }
 
     if (!/\.module\.s?css$/.test(id)) {
-        return injectStyle(this, code, id);
+        return injectStyle(ctx, code, id);
     }
 
     const result = transform({
@@ -89,7 +94,7 @@ function transformStyle(ctx: PluginContext, code: string, id: string) {
         const classes = ${JSON.stringify(names, undefined, 4)};
         export default classes;
 
-        ${injectStyle(ctx, code, id)}
+        ${injectStyle(ctx, new TextDecoder().decode(result.code), id)}
     `;
 }
 
@@ -105,8 +110,7 @@ function transformSCSS(ctx: PluginContext, code: string, id: string) {
 }
 
 function injectStyle(ctx: PluginContext, code: string, id: string) {
-    // TODO: type definition of rollup lacks the attributes field
-    const { attributes } = ctx.getModuleInfo(id) as any;
+    const { attributes } = ctx.getModuleInfo(id);
 
     return javascript`
         export const cssText = ${toRawStringLiteral(code)};

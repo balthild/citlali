@@ -36,8 +36,7 @@ export class Bundler {
     }
 
     protected async getRollupOptions() {
-        const custom = this.citlali.options.rollup;
-        const plugins: InputPluginOption[] = [custom.plugins];
+        const plugins: InputPluginOption[] = [];
 
         if (/\.user\.tsx?$/.test(this.entry)) {
             const typescript = await import('@rollup/plugin-typescript');
@@ -48,10 +47,6 @@ export class Bundler {
             plugins.push(UserscriptPlugin(this));
         }
 
-        delete custom.plugins;
-        delete custom.input;
-        delete custom.output;
-
         const base = defineConfig({
             plugins,
             input: 'citlali:userscript',
@@ -61,6 +56,10 @@ export class Bundler {
                 inlineDynamicImports: true,
             },
         });
+
+        const custom = this.citlali.options.rollup;
+        delete custom.input;
+        delete custom.output;
 
         return mergeAndConcat(base, custom);
     }

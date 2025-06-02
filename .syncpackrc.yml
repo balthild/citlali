@@ -17,9 +17,9 @@ sortFirst:
   - private
 
   # Tooling
+  - packageManager
   - scripts
   - workspaces
-  - packageManager
 
   # File Structure & API
   - type

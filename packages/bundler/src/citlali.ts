@@ -16,8 +16,8 @@ type OutputName = string;
 type EntryName = string;
 
 /**
- * Rollup doesn't support disabling code splitting, so we need to
- * create an individual rollup instance for each entry point.
+ * Rollup doesn't support disabling code splitting, so each
+ * entry point needs an individual rollup instance.
  *
  * See https://github.com/rollup/rollup/issues/2756
  */

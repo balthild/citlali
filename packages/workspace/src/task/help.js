@@ -1,11 +1,11 @@
-import dedent from 'dedent';
+const text = `
+Citlali Workspace Scripts
+
+Usage:
+    citlali-workspace rollup [rollup options]
+    citlali-workspace clean
+`;
 
 export default function help() {
-    console.log(dedent`
-        Citlali Workspace Scripts
-
-        Usage:
-            citlali-workspace rollup [rollup options]
-            citlali-workspace clean
-    `);
+    console.log(text);
 }
