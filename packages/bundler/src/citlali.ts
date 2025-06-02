@@ -46,6 +46,10 @@ export class Citlali {
     }
 
     protected serve() {
+        if (!this.args.watch || !this.args.serve) {
+            return;
+        }
+
         console.log('┌─────────────────────────────────────────────┐');
         console.log('│ Running dev server on http://localhost:3000 │');
         console.log('└─────────────────────────────────────────────┘');
