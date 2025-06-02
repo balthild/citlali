@@ -1,11 +1,10 @@
 import { readFile } from 'fs/promises';
 import { writeFile } from 'fs/promises';
 import { unlink } from 'fs/promises';
-import { dirname, extname, isAbsolute } from 'path';
+import { isAbsolute } from 'path';
 import { pathToFileURL } from 'url';
 
-import { Plugin, rollup } from 'rollup';
-import swc from 'rollup-plugin-swc3';
+import { Plugin, rolldown } from 'rolldown';
 
 import { dedent } from './text';
 
@@ -33,16 +32,7 @@ export async function evalModule<T = any>(path: string): Promise<T> {
 export async function evalModuleCode<T = any>(path: string, code: string): Promise<T> {
     const plugins = [EvalPlugin(path, code)];
 
-    if (/\.tsx?$/.test(path)) {
-        plugins.push(swc({
-            extensions: ['.ts', '.tsx'],
-            tsconfig: false,
-            swcrc: false,
-            isModule: true,
-        }));
-    }
-
-    const build = await rollup({
+    const build = await rolldown({
         plugins,
         input: `citlali:eval:${path}`,
         treeshake: true,
@@ -83,7 +73,9 @@ function EvalPlugin(path: string, code: string): Plugin {
                 return code;
             }
         },
-
+        // https://github.com/rolldown/rolldown/issues/819
+        // https://github.com/rolldown/rolldown/issues/3301
+        /*
         resolveImportMeta(property, { moduleId }) {
             const meta = {
                 url: pathToFileURL(moduleId).href,
@@ -99,5 +91,6 @@ function EvalPlugin(path: string, code: string): Plugin {
                 return meta[property as keyof typeof meta];
             }
         },
+        */
     };
 }
