@@ -106,6 +106,7 @@ __metadata:
   dependencies:
     dprint: "npm:^0.50.0"
     syncpack: "npm:^13.0.4"
+    typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
 
