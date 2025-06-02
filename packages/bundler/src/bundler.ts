@@ -1,4 +1,5 @@
 import typescript from '@rollup/plugin-typescript';
+import chalk from 'chalk';
 import { mergeAndConcat } from 'merge-anything';
 import { defineConfig, InputPluginOption, OutputOptions, rollup, RollupWatcher, watch } from 'rollup';
 
@@ -32,8 +33,37 @@ export class Bundler {
     }
 
     protected async watch() {
+        let start: DOMHighResTimeStamp;
+
         const options = await this.getRollupOptions();
         this.watcher = watch(options);
+        this.watcher.on('event', (event) => {
+            switch (event.code) {
+                case 'START': {
+                    start = performance.now();
+                    break;
+                }
+
+                case 'BUNDLE_START': {
+                    const input = chalk.bold(this.entry);
+                    const output = chalk.bold(this.citlali.options.dist);
+                    console.log(chalk.cyan(`bundles ${input} → ${output}...`));
+                    break;
+                }
+
+                case 'BUNDLE_END': {
+                    const output = chalk.bold(this.citlali.getOutputPath(this.entry));
+                    const elapsed = chalk.bold(Math.round(performance.now() - start) + 'ms');
+                    console.log(chalk.green(`created ${output} in ${elapsed}`));
+                    break;
+                }
+
+                case 'END': {
+                    console.log('waiting for changes...');
+                    break;
+                }
+            }
+        });
     }
 
     protected async getRollupOptions() {

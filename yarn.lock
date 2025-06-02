@@ -60,6 +60,7 @@ __metadata:
     "@rollup/plugin-typescript": "npm:^12.1.2"
     "@types/micromatch": "npm:^4.0.9"
     "@types/node": "npm:^22.15.29"
+    chalk: "npm:^5.4.1"
     chokidar: "npm:^4.0.3"
     fast-glob: "npm:^3.3.3"
     lightningcss: "npm:^1.30.1"
@@ -84,7 +85,7 @@ __metadata:
     "@citlali/core": "workspace:^"
     "@citlali/utils": "workspace:^"
     "@types/node": "npm:^22.15.29"
-    ansi-styles: "npm:^6.2.1"
+    chalk: "npm:^5.4.1"
     dotenv: "npm:^16.5.0"
   languageName: unknown
   linkType: soft
@@ -878,7 +879,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ansi-styles@npm:^6.1.0, ansi-styles@npm:^6.2.1":
+"ansi-styles@npm:^6.1.0":
   version: 6.2.1
   resolution: "ansi-styles@npm:6.2.1"
   checksum: 10c0/5d1ec38c123984bcedd996eac680d548f31828bd679a66db2bdf11844634dde55fec3efa9c6bb1d89056a5e79c1ac540c4c784d592ea1d25028a92227d2f2d5c

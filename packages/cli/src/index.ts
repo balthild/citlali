@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { configDotenv } from 'dotenv';
 
 import { dedent } from '@citlali/utils';
@@ -5,7 +6,6 @@ import { dedent } from '@citlali/utils';
 import { build } from './build';
 import { clean } from './clean';
 import { dev } from './dev';
-import { ansi } from './utils/ansi';
 
 export function main(command: string, args: string[]) {
     configDotenv();
@@ -30,9 +30,9 @@ function help() {
             citlali <command> [OPTIONS]
 
         Commands:
-            ${ansi.bold('dev')}     Watch and build files on change
-            ${ansi.bold('build')}   Build files
-            ${ansi.bold('clean')}   Delete build outputs
+            ${chalk.bold('dev')}     Watch and build files on change
+            ${chalk.bold('build')}   Build files
+            ${chalk.bold('clean')}   Delete build outputs
     `);
 
     process.exit(1);

@@ -17,6 +17,7 @@
     "@citlali/core": "workspace:^",
     "@citlali/utils": "workspace:^",
     "@rollup/plugin-typescript": "^12.1.2",
+    "chalk": "^5.4.1",
     "chokidar": "^4.0.3",
     "fast-glob": "^3.3.3",
     "lightningcss": "^1.30.1",

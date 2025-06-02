@@ -17,7 +17,7 @@
     "@citlali/bundler": "workspace:^",
     "@citlali/core": "workspace:^",
     "@citlali/utils": "workspace:^",
-    "ansi-styles": "^6.2.1",
+    "chalk": "^5.4.1",
     "dotenv": "^16.5.0"
   },
   "devDependencies": {
