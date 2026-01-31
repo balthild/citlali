@@ -15,8 +15,8 @@
   ],
   "type": "module",
   "devDependencies": {
-    "dprint": "^0.50.0",
+    "dprint": "^0.51.1",
     "syncpack": "^13.0.4",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.3"
   }
 }

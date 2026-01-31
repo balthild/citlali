@@ -73,6 +73,7 @@ function EvalPlugin(path: string, code: string): Plugin {
                 return code;
             }
         },
+        // Rolldown does not support this yet
         // https://github.com/rolldown/rolldown/issues/819
         // https://github.com/rolldown/rolldown/issues/3301
         /*

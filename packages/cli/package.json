@@ -17,10 +17,10 @@
     "@citlali/bundler": "workspace:^",
     "@citlali/core": "workspace:^",
     "@citlali/utils": "workspace:^",
-    "chalk": "^5.4.1",
-    "dotenv": "^16.5.0"
+    "chalk": "^5.6.2",
+    "dotenv": "^17.2.3"
   },
   "devDependencies": {
-    "@types/node": "^22.15.29"
+    "@types/node": "^24.10.9"
   }
 }

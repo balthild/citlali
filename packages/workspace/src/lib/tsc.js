@@ -1,4 +1,3 @@
-import { readFileSync } from 'fs';
 import { join } from 'path';
 
 import ts from 'typescript';
@@ -46,7 +45,7 @@ function createSystem() {
         },
         readFile(path, encoding) {
             if (path === 'tsconfig.json' && !ts.sys.fileExists(path)) {
-                return readFileSync(join(import.meta.dir, '..', '..', path), 'utf-8');
+                path = join(import.meta.dirname, '..', '..', path);
             }
 
             return ts.sys.readFile(path, encoding);
@@ -59,6 +58,6 @@ function createSystem() {
  * @returns {ts.DiagnosticReporter}
  */
 function createDiagnosticReporter(system) {
-    // @ts-ignore
+    // @ts-expect-error
     return ts.createDiagnosticReporter(system, true);
 }

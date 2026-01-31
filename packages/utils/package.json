@@ -14,10 +14,10 @@
     "./dist"
   ],
   "dependencies": {
-    "magicast": "^0.3.5",
-    "rolldown": "1.0.0-beta.10"
+    "magicast": "^0.5.1",
+    "rolldown": "^1.0.0-rc.2"
   },
   "devDependencies": {
-    "@types/node": "^22.15.29"
+    "@types/node": "^24.10.9"
   }
 }

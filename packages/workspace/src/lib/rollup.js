@@ -8,6 +8,7 @@ import { defineConfig, rollup, watch } from 'rollup';
 export async function rollupBuild(entrypoints) {
     const config = createRollupConfig(entrypoints);
     const build = await rollup(config);
+    // @ts-expect-error
     await build.write(config.output);
 }
 

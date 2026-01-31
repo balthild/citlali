@@ -3,7 +3,6 @@
     "package.json",
     "tsconfig.json",
     "rollup.config.js",
-    "syncpack.config.js",
     "packages/*/src/**/*.{js,ts}",
   ],
   "excludes": [
@@ -26,8 +25,8 @@
     "jsxSelfClosingElement.bracketPosition": "nextLine"
   },
   "plugins": [
-    "https://plugins.dprint.dev/balthild/imporg-0.1.6.wasm",
-    "https://plugins.dprint.dev/typescript-0.93.3.wasm",
-    "https://plugins.dprint.dev/json-0.19.4.wasm",
+    "https://plugins.dprint.dev/balthild/imporg-0.1.8.wasm",
+    "https://plugins.dprint.dev/typescript-0.95.13.wasm",
+    "https://plugins.dprint.dev/json-0.21.1.wasm",
   ]
 }

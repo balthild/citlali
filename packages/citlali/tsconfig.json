@@ -2,6 +2,7 @@
   "extends": "@citlali/workspace",
   "include": ["./src"],
   "compilerOptions": {
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "outDir": "./dist"
   }
 }
