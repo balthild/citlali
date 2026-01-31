@@ -50,12 +50,13 @@ export class Citlali {
             return;
         }
 
+        const server = createServer({ root: this.options.dist });
+        server.listen(3000);
+
         console.log('┌─────────────────────────────────────────────┐');
         console.log('│ Running dev server on http://localhost:3000 │');
         console.log('└─────────────────────────────────────────────┘');
 
-        const server = createServer({ root: this.options.dist });
-        server.listen(3000);
         return server;
     }
 

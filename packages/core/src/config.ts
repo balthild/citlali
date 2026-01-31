@@ -30,7 +30,7 @@ export interface CitlaliOptions {
     minify: false;
 
     /**
-     * Custom rollup configutation. Note that `input` and `output` will be overridden.
+     * Custom rollup configuration. Note that `input` and `output` will be overridden.
      * Default: `{}`
      */
     rollup?: RollupOptions;
