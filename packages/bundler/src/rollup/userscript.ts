@@ -14,7 +14,7 @@ export function UserscriptPlugin(bundler: Bundler): Plugin {
         name: 'citlali-rollup-userscript',
 
         resolveId(source, importer, options) {
-            if (source === 'citlali:entrypoint') {
+            if (source === 'citlali:userscript') {
                 return this.resolve(bundler.entry);
             }
 
@@ -24,9 +24,9 @@ export function UserscriptPlugin(bundler: Bundler): Plugin {
         },
 
         load(id) {
-            if (id === 'citlali:userscript') {
+            if (id === 'citlali:entrypoint') {
                 return javascript`
-                    import userscript from 'citlali:entrypoint';
+                    import userscript from 'citlali:userscript';
                     userscript.main();
                 `;
             }
@@ -39,33 +39,14 @@ export function UserscriptPlugin(bundler: Bundler): Plugin {
         },
 
         async banner(chunk) {
-            if (chunk.facadeModuleId !== 'citlali:userscript') {
+            if (chunk.facadeModuleId !== 'citlali:entrypoint') {
                 return;
             }
 
             const entry = await this.resolve(bundler.entry);
             const { code } = this.getModuleInfo(entry.id)!;
-            const clean = cleanEntrypoint(code!);
-            const module = await evalModuleCode(bundler.entry, clean.code);
-            const options = module.default as UserscriptOptions;
-
-            return [
-                `// ==UserScript==`,
-
-                bannerLine('name', options.name),
-                bannerLine('description', options.description ?? ''),
-                bannerLine('version', options.version),
-                bannerLine('author', options.author),
-                bannerLine('namespace', options.namespace ?? 'Built with Citlali'),
-
-                ...(options.match?.length ? options.match : ['*://*/*'])
-                    .map((match) => bannerLine('match', match)),
-
-                ...(options.grant?.length ? options.grant : ['none'])
-                    .map((grant) => bannerLine('grant', grant)),
-
-                `// ==/UserScript==`,
-            ].join('\n');
+            const banner = await renderBanner(this, bundler.entry, code);
+            return banner.join('\n');
         },
     };
 }
@@ -125,6 +106,30 @@ function injectStyle(ctx: PluginContext, code: string, id: string) {
 function toTemplateLiteral(value: string) {
     const escaped = value.replace(/[`\$\\]/g, (ch) => '\\' + ch);
     return `\`${escaped}\``;
+}
+
+async function renderBanner(ctx: PluginContext, entry: string, code: string) {
+    const clean = cleanEntrypoint(code);
+    const module = await evalModuleCode(entry, clean.code);
+    const options = module.default as UserscriptOptions;
+
+    return [
+        `// ==UserScript==`,
+
+        bannerLine('name', options.name),
+        bannerLine('description', options.description ?? ''),
+        bannerLine('version', options.version),
+        bannerLine('author', options.author),
+        bannerLine('namespace', options.namespace ?? 'Built with Citlali'),
+
+        ...(options.match?.length ? options.match : ['*://*/*'])
+            .map((match) => bannerLine('match', match)),
+
+        ...(options.grant?.length ? options.grant : ['none'])
+            .map((grant) => bannerLine('grant', grant)),
+
+        `// ==/UserScript==`,
+    ];
 }
 
 function bannerLine(name: string, value: string) {
