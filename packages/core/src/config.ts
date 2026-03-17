@@ -1,8 +1,7 @@
 import FastGlob from 'fast-glob';
 import { RollupOptions } from 'rollup';
 
-import { evalModule } from '@citlali/utils';
-import { AsyncGetter } from '@citlali/utils';
+import { AsyncGetter, evalModule } from '@citlali/utils';
 
 export interface CitlaliOptions {
     /**

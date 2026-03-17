@@ -2,15 +2,16 @@
   "includes": [
     "package.json",
     "tsconfig.json",
+    "dprint.json",
     "rollup.config.js",
     "packages/*/src/**/*.{js,ts}",
   ],
   "excludes": [
     "**/node_modules",
-    "**/*-lock.json"
+    "**/*-lock.json",
   ],
   "imporg": {
-    "aliases": ["^~/", "^@/", "^@citlali/"],
+    "aliases": ["^#/", "^@citlali/"],
   },
   "typescript": {
     "indentWidth": 4,
@@ -22,11 +23,18 @@
     "arrowFunction.useParentheses": "force",
     "functionExpression.spaceBeforeParentheses": true,
     "jsxOpeningElement.bracketPosition": "sameLine",
-    "jsxSelfClosingElement.bracketPosition": "nextLine"
+    "jsxSelfClosingElement.bracketPosition": "nextLine",
+  },
+  "json": {
+    "trailingCommas": "jsonc",
+    "jsonTrailingCommaFiles": [
+      "tsconfig.json",
+      "dprint.json",
+    ],
   },
   "plugins": [
     "https://plugins.dprint.dev/balthild/imporg-0.1.8.wasm",
     "https://plugins.dprint.dev/typescript-0.95.13.wasm",
     "https://plugins.dprint.dev/json-0.21.1.wasm",
-  ]
+  ],
 }

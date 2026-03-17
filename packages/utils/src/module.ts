@@ -1,6 +1,4 @@
-import { readFile } from 'fs/promises';
-import { writeFile } from 'fs/promises';
-import { unlink } from 'fs/promises';
+import { readFile, unlink, writeFile } from 'fs/promises';
 import { isAbsolute } from 'path';
 import { pathToFileURL } from 'url';
 
