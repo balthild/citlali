@@ -18,9 +18,9 @@
     "@citlali/core": "workspace:^",
     "@citlali/utils": "workspace:^",
     "chalk": "^5.6.2",
-    "dotenv": "^17.2.3"
+    "dotenv": "^17.3.1"
   },
   "devDependencies": {
-    "@types/node": "^24.10.9"
+    "@types/node": "^24.12.0"
   }
 }

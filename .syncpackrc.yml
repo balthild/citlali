@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://unpkg.com/syncpack/schema.json
+# yaml-language-server: $schema=https://unpkg.com/syncpack@14.2.0/schema.json
 
 versionGroups:
   - label: "Use Workspace Protocol for Cross References"
